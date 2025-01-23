@@ -1,11 +1,11 @@
 import setuptools
 import os
+import uv_build_utils.version_utils
 import uv_build_utils.repo_utils
 
-from pip._internal.network.session import PipSession
-from pip._internal.req import parse_requirements
 
-requirements = parse_requirements(os.path.join(os.path.dirname(__file__), 'requirements.txt'), session=PipSession())
+with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
+    required = f.read().splitlines()
 
 setuptools.setup(
     name=uv_build_utils.repo_utils.repo_name(),
@@ -13,12 +13,12 @@ setuptools.setup(
     author="",
     author_email="",
     description="",
-    packages=setuptools.find_packages(exclude=['*tests*', '*production*']),
+    package_dir={'': uv_build_utils.repo_utils.repo_root()},
+    packages=setuptools.find_packages(uv_build_utils.repo_utils.repo_root()),
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=[str(requirement.requirement) for requirement in requirements],
-    include_package_data=True
+    install_requires=required
 )
