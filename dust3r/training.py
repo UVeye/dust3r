@@ -31,9 +31,8 @@ from dust3r.datasets import get_data_loader  # noqa
 from dust3r.losses import *  # noqa: F401, needed when loading the model
 from dust3r.inference import loss_of_one_batch  # noqa
 
-import dust3r.utils.path_to_croco  # noqa: F401
-import croco.utils.misc as misc  # noqa
-from croco.utils.misc import NativeScalerWithGradNormCount as NativeScaler  # noqa
+import croco as misc
+from croco.utils import NativeScalerWithGradNormCount as NativeScaler  # noqa
 
 
 def get_args_parser():
@@ -345,7 +344,7 @@ def test_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 
     model.eval()
     metric_logger = misc.MetricLogger(delimiter="  ")
-    metric_logger.meters = defaultdict(lambda: misc.SmoothedValue(window_size=9**9))
+    metric_logger.meters = defaultdict(lambda: misc.SmoothedValue(window_size=9 ** 9))
     header = 'Test Epoch: [{}]'.format(epoch)
 
     if log_writer is not None:
